@@ -1,5 +1,8 @@
 # Linux Routing Lab with Docker
 
+## Prerequisite
+sudo apt-get install docker-compose docker.io
+
 ## Quick Start
 ./scripts/setup.sh
 
