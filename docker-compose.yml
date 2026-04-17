@@ -1,0 +1,64 @@
+services:
+  client:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: client
+    tty: true
+    cap_add:
+      - NET_ADMIN
+    networks:
+      client-net:
+        ipv4_address: 10.20.17.25
+
+  gateway:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: gateway
+    tty: true
+    cap_add:
+      - NET_ADMIN
+    networks:
+      client-net:
+        ipv4_address: 10.20.16.2
+      server-net:
+        ipv4_address: 10.10.50.2
+
+  servera:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: serverA
+    tty: true
+    cap_add:
+      - NET_ADMIN
+    networks:
+      server-net:
+        ipv4_address: 10.10.50.9
+
+  serverb:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: serverB
+    privileged: true
+    tty: true
+    networks:
+      server-net:
+        ipv4_address: 10.10.50.10
+
+networks:
+  client-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.20.16.0/22
+          gateway: 10.20.16.1
+
+  server-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.50.0/24
+          gateway: 10.10.50.1
